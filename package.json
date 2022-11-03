@@ -9,8 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@w3ui/react-keyring": "^1.0.1",
+    "@w3ui/react-uploader": "^2.1.2",
+    "@w3ui/react-uploads-list": "^1.1.2",
     "next": "13.0.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-camera-pro": "^1.2.1",
+    "react-dom": "18.2.0",
+    "styled-components": "^5.3.6"
   }
 }
