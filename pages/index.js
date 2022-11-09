@@ -24,15 +24,15 @@ export function Home() {
 
   const takePhoto = async (e) => {
     e.preventDefault();
-    const imgdata = camera.current.takePhoto();
+    const imgData = camera.current.takePhoto();
     try {
       // Build a DAG from the file data to obtain the root CID.
       setStatus("encoding");
       // use fetch to transform data URL -> blob -> file
-      const theFile = await fetch(imgdata).then((it) => it.blob());
+      const theFile = await fetch(imgData).then((it) => it.blob());
       setStatus("uploading");
       const cid = await uploader.uploadFile(theFile);
-      setImages([{ cid: cid, data: imgdata }, ...images]);
+      setImages([{ cid: cid, data: imgData }, ...images]);
     } catch (err) {
       console.error(err);
       setError(err);
