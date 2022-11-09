@@ -5,19 +5,6 @@ import { useUploader } from "@w3ui/react-uploader";
 import { useUploadsList } from "@w3ui/react-uploads-list";
 import ImageListItem from "../components/ImageListItem";
 
-function dataURLtoFile(dataurl) {
-  const arr = dataurl.split(",");
-  const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  const blob = new Blob([u8arr], { type: mime });
-  return new File([blob], "camera-image");
-}
-
 export function Home() {
   const camera = useRef(null);
   const [, uploader] = useUploader();
@@ -41,7 +28,8 @@ export function Home() {
     try {
       // Build a DAG from the file data to obtain the root CID.
       setStatus("encoding");
-      const theFile = dataURLtoFile(imgdata);
+      // use fetch to transform data URL -> blob -> file
+      const theFile = await fetch(imgdata).then((it) => it.blob());
       setStatus("uploading");
       const cid = await uploader.uploadFile(theFile);
       setImages([{ cid: cid, data: imgdata }, ...images]);
