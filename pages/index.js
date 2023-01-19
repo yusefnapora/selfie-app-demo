@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
-import { withIdentity } from "../components/Authenticator";
 import { Camera } from "react-camera-pro";
-import { useUploader } from "@w3ui/react-uploader";
-import { useUploadsList } from "@w3ui/react-uploads-list";
-import ImageListItem from "../components/ImageListItem";
+import { useState, useRef, useEffect } from "react";
+import { useUploader } from '@w3ui/react-uploader'
+import { useUploadsList } from '@w3ui/react-uploads-list'
+
+import { withIdentity } from "../components/Authenticator";
+import ImageListItem from '../components/ImageListItem';
 
 export function Home() {
   const camera = useRef(null);
@@ -11,15 +12,14 @@ export function Home() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
   const [images, setImages] = useState([]);
+  
+  const [{ data: listData }, { next: listNext }] = useUploadsList();
+  // load the first page of uploads
+  useEffect(() => {
+    listNext()
+  }, [])
 
-  const {
-    loading,
-    error: listError,
-    data: listData,
-    reload: listReload,
-  } = useUploadsList();
-  const printListData = (listData && listData.results) || [];
-
+  const printListData = listData || []
   const printStatus = status === "done" && error ? error.message : status;
 
   const takePhoto = async (e) => {
@@ -58,7 +58,7 @@ export function Home() {
         {images.map(({ cid, data }) => (
           <ImageListItem key={cid} cid={cid} data={data} />
         ))}
-        {printListData.map(({ dataCid: cid }) => (
+        {printListData.map(({ root: cid }) => (
           <ImageListItem key={cid} cid={cid} />
         ))}
       </ul>
@@ -66,4 +66,4 @@ export function Home() {
   );
 }
 
-export default withIdentity(Home);
+export default withIdentity(Home)

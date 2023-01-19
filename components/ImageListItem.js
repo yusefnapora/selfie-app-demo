@@ -1,4 +1,5 @@
 export default function ImageListItem({ cid, data }) {
+  cid = cid.toString()
   if (/bagb/.test(`${cid}`)) {
     return <li key={cid}>CAR cid: {cid}</li>;
   }
